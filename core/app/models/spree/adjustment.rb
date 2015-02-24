@@ -26,6 +26,7 @@ module Spree
     belongs_to :source, polymorphic: true
     belongs_to :order, :class_name => "Spree::Order"
 
+    validates :adjustable, presence: true
     validates :label, presence: true
     validates :amount, numericality: true
 

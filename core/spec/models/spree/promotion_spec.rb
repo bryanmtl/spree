@@ -188,8 +188,10 @@ describe Spree::Promotion do
     end
 
     let!(:adjustment) do
+      order = create(:order)
       Spree::Adjustment.create!(
         :source => action,
+        :adjustable => order,
         :amount => 10,
         :label => "Promotional adjustment"
       )
