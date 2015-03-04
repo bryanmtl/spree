@@ -43,6 +43,7 @@ adjustLineItem = (line_item_id, quantity) ->
   $.ajax(
     type: "PUT",
     url: Spree.url(url),
+    headers: { "X-Spree-Token": Spree.api_key },
     data:
       line_item:
         quantity: quantity
@@ -53,6 +54,7 @@ deleteLineItem = (line_item_id) ->
   url = lineItemURL(line_item_id)
   $.ajax(
     type: "DELETE"
+    headers: { "X-Spree-Token": Spree.api_key }
     url: Spree.url(url)
   ).done (msg) ->
     $('#line-item-' + line_item_id).remove()

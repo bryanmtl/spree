@@ -8,6 +8,7 @@ $ ->
     $.ajax
       type: 'GET'
       url: @href
+      headers: { "X-Spree-Token": Spree.api_key }
       data: (
         authenticity_token: AUTH_TOKEN
       )

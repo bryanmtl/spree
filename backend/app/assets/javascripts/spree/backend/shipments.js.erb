@@ -65,6 +65,7 @@ $(document).ready(function () {
     var url = Spree.url(Spree.routes.shipments_api + '/' + shipment_number + '/ship.json');
     $.ajax({
       type: 'PUT',
+      headers: { "X-Spree-Token": Spree.api_key },
       url: url
     }).done(function () {
       window.location.reload();
@@ -88,6 +89,7 @@ $(document).ready(function () {
     $.ajax({
       type: 'PUT',
       url: url,
+      headers: { "X-Spree-Token": Spree.api_key },
       data: {
         shipment: {
           selected_shipping_rate_id: selected_shipping_rate_id,
@@ -115,6 +117,7 @@ $(document).ready(function () {
     $.ajax({
       type: 'PUT',
       url: url,
+      headers: { "X-Spree-Token": Spree.api_key },
       data: {
         shipment: {
           tracking: tracking
@@ -149,6 +152,7 @@ adjustShipmentItems = function(shipment_number, variant_id, quantity){
       $.ajax({
         type: "PUT",
         url: Spree.url(url),
+        headers: { "X-Spree-Token": Spree.api_key },
         data: { variant_id: variant_id, quantity: new_quantity }
       }).done(function( msg ) {
         Spree.advanceOrder();
@@ -196,6 +200,7 @@ startItemSplit = function(event){
     type: "GET",
     async: false,
     url: Spree.url(Spree.routes.variants_api),
+    headers: { "X-Spree-Token": Spree.api_key },
     data: {
       q: {
         "id_eq": variant_id
@@ -250,6 +255,7 @@ completeItemSplit = function(event) {
         type: "POST",
         async: false,
         url: Spree.url(Spree.routes.shipments_api + "/transfer_to_location"),
+        headers: { "X-Spree-Token": Spree.api_key },
         data: {
             original_shipment_number: original_shipment_number,
             variant_id: variant_id,
@@ -267,6 +273,7 @@ completeItemSplit = function(event) {
             type: "POST",
             async: false,
             url: Spree.url(Spree.routes.shipments_api + "/transfer_to_shipment"),
+            headers: { "X-Spree-Token": Spree.api_key },
             data: {
                 original_shipment_number: original_shipment_number,
                 target_shipment_number: target_shipment_number,
@@ -307,6 +314,7 @@ addVariantFromStockLocation = function() {
     $.ajax({
       type: "POST",
       url: Spree.url(Spree.routes.shipments_api + "?shipment[order_id]=" + order_number),
+      headers: { "X-Spree-Token": Spree.api_key },
       data: { variant_id: variant_id, quantity: quantity, stock_location_id: stock_location_id }
     }).done(function( msg ) {
       Spree.advanceOrder();

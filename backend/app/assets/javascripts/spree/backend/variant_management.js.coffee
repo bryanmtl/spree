@@ -5,6 +5,7 @@ jQuery ->
   $('.toggle_variant_track_inventory').on 'submit', ->
     $.ajax
       type: @method
+      headers: { "X-Spree-Token": Spree.api_key },
       url: @action
       data: $(@).serialize()
     false

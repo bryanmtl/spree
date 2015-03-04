@@ -3,11 +3,12 @@ $(@).ready( ->
     return if $("#coupon_code").val().length == 0
     $.ajax
       type: 'PUT'
-      url: Spree.url(Spree.routes.orders_api + '/' + order_number + '/apply_coupon_code.json');
+      url: Spree.url(Spree.routes.orders_api + '/' + order_number + '/apply_coupon_code.json')
+      headers: { "X-Spree-Token": Spree.api_key }
       data:
         coupon_code: $("#coupon_code").val()
       success: ->
-        window.location.reload();
+        window.location.reload()
       error: (msg) ->
         if msg.responseJSON["error"]
           show_flash 'error', msg.responseJSON["error"]

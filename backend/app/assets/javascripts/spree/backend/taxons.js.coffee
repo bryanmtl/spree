@@ -5,6 +5,7 @@ $(document).ready ->
     $.ajax
       url: Spree.routes.classifications_api,
       method: 'PUT',
+      headers: { "X-Spree-Token": Spree.api_key },
       data:
         product_id: ui.item.data('product-id'),
         taxon_id: $('#taxon_id').val(),
@@ -17,6 +18,7 @@ $(document).ready ->
       ajax:
         url: Spree.routes.taxons_search,
         datatype: 'json',
+        headers: { "X-Spree-Token": Spree.api_key },
         data: (term, page) ->
           per_page: 50,
           page: page,
@@ -35,6 +37,7 @@ $(document).ready ->
     el = $('#taxon_products')
     $.ajax
       url: Spree.routes.taxon_products_api,
+      headers: { "X-Spree-Token": Spree.api_key },
       data:
         id: e.val
       success: (data) ->

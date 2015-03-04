@@ -133,6 +133,7 @@ $(document).ready(function(){
     $(ajax_indicator).show();
     $.ajax({ dataType: 'html',
              url: $(this).data("base-url")+encodeURIComponent($(this).val()),
+             headers: { "X-Spree-Token": Spree.api_key },
              type: 'get',
              success: function(data){
                $(target).html(data);
@@ -168,6 +169,7 @@ $(document).ready(function(){
       $.ajax({
         type: 'POST',
         url: $(this).prop("href"),
+        headers: { "X-Spree-Token": Spree.api_key },
         data: {
           _method: 'delete',
           authenticity_token: AUTH_TOKEN
@@ -196,6 +198,7 @@ $(document).ready(function(){
       $.ajax({
         type: 'POST',
         url: el.prop("href"),
+        headers: { "X-Spree-Token": Spree.api_key },
         data: {
           _method: 'delete',
           authenticity_token: AUTH_TOKEN
@@ -215,7 +218,7 @@ $(document).ready(function(){
   $('body').on('click', '.select_properties_from_prototype', function(){
     $("#busy_indicator").show();
     var clicked_link = $(this);
-    $.ajax({ dataType: 'script', url: clicked_link.prop("href"), type: 'get',
+    $.ajax({ dataType: 'script', url: clicked_link.prop("href"), type: 'get', headers: { "X-Spree-Token": Spree.api_key },
         success: function(data){
           clicked_link.parent("td").parent("tr").hide();
           $("#busy_indicator").hide();
@@ -253,6 +256,7 @@ $(document).ready(function(){
             type: 'POST',
             dataType: 'script',
             url: $(ui.item).closest("table.sortable").data("sortable-link"),
+            headers: { "X-Spree-Token": Spree.api_key },
             data: positions,
             success: function(data){ $("#progress").hide(); }
           });
@@ -280,7 +284,8 @@ $(document).ready(function(){
       $.ajax({
           type: "PUT",
           async: false,
-          url: Spree.url(Spree.routes.checkouts_api + "/" + order_number + "/advance")
+          url: Spree.url(Spree.routes.checkouts_api + "/" + order_number + "/advance"),
+          headers: { "X-Spree-Token": Spree.api_key },
       }).done(function() {
           window.location.reload();
       });

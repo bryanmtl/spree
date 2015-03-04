@@ -5,5 +5,6 @@ jQuery ->
     $.ajax
       type: @method
       url: @action
+      headers: { "X-Spree-Token": Spree.api_key }
       data: $(@).serialize()
     false

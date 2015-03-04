@@ -14,6 +14,7 @@ jQuery ($) ->
       jqXHR = $.ajax
         type: 'PUT'
         url:  @url.toString()
+        headers: { "X-Spree-Token": Spree.api_key }
         data: { payment: attributes }
       jqXHR.done (data) =>
         @data = data

@@ -14,6 +14,7 @@ handle_move = (e, data) ->
     type: "POST",
     dataType: "json",
     url: url.toString(),
+    headers: { "X-Spree-Token": Spree.api_key }
     data: ({_method: "put", "taxon[parent_id]": new_parent.prop("id"), "taxon[child_index]": position }),
     error: handle_ajax_error
 
@@ -30,6 +31,7 @@ handle_create = (e, data) ->
     type: "POST",
     dataType: "json",
     url: base_url.toString(),
+    headers: { "X-Spree-Token": Spree.api_key }
     data: ({"taxon[name]": name, "taxon[parent_id]": new_parent.prop("id"), "taxon[child_index]": position }),
     error: handle_ajax_error,
     success: (data,result) ->
@@ -47,6 +49,7 @@ handle_rename = (e, data) ->
     type: "POST",
     dataType: "json",
     url: url.toString(),
+    headers: { "X-Spree-Token": Spree.api_key },
     data: {_method: "put", "taxon[name]": name },
     error: handle_ajax_error
 
@@ -61,6 +64,7 @@ handle_delete = (e, data) ->
         type: "POST",
         dataType: "json",
         url: delete_url.toString(),
+        headers: { "X-Spree-Token": Spree.api_key }
         data: {_method: "delete"},
         error: handle_ajax_error
     else
@@ -75,6 +79,7 @@ root.setup_taxonomy_tree = (taxonomy_id) ->
 
     $.ajax
       url: Spree.url(base_url.path().replace("/taxons", "/jstree")).toString(),
+      headers: { "X-Spree-Token": Spree.api_key },
       success: (taxonomy) ->
         last_rollback = null
 

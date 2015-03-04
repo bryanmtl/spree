@@ -7,14 +7,15 @@ $(document).ready(function () {
 
       var id = '#' + $(this).prop('id').replace('_quantity', '_id');
 
-      $.post('/admin/orders/' + $('input#order_number').val() + '/line_items/' + $(id).val(), {
-          _method: 'put',
-          'line_item[quantity]': $(this).val()
-        },
-
-        function (resp) {
+      $.ajax(
+        url: "/admin/orders/" + $('input#order_number').val() + '/line_items/' + $(id).val(),
+        method: "PUT",
+        headers: { "X-Spree-Token": Spree.api_key },
+        data: { "line_item": { "quantity": $(this).val() } },
+        always: function (resp) {
           $('#order-form-wrapper').html(resp.responseText);
-        });
+        }
+      );
     });
   });
 });
