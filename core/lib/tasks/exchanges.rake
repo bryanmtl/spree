@@ -33,7 +33,12 @@ namespace :exchanges do
           order_errors: item_charger.original_order.errors.full_messages,
         })
       end
+
+      if Spree::UnreturnedItemCharger.allow_refund_handler
+        Spree::UnreturnedItemCharger.allow_refund_handler.call(return_items)
+      end
     end
+
 
     if failures.any?
       if Spree::UnreturnedItemCharger.failure_handler

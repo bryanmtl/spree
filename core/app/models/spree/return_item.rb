@@ -33,6 +33,7 @@ module Spree
     scope :awaiting_return, -> { where(reception_status: 'awaiting') }
     scope :expecting_return, -> { where.not(reception_status: COMPLETED_RECEPTION_STATUSES) }
     scope :not_cancelled, -> { where.not(reception_status: 'cancelled') }
+    scope :not_receivable, -> { where.not(reception_status: %w(cancelled unreturned_charge))}
     scope :received, -> { where(reception_status: 'received') }
     INTERMEDIATE_RECEPTION_STATUSES.each do |reception_status|
       scope reception_status, -> { where(reception_status: reception_status) }
@@ -71,6 +72,7 @@ module Spree
       event(:wrong_item_shipped) { transition to: :shipped_wrong_item, from: :awaiting }
       event(:short_shipped) { transition to: :short_shipped, from: :awaiting }
       event(:in_transit) { transition to: :in_transit, from: :awaiting }
+      event(:unreturned_charge) { transition to: :unreturned_charge, from: :awaiting }
     end
 
     extend DisplayMoney
@@ -107,7 +109,7 @@ module Spree
     end
 
     def self.from_inventory_unit(inventory_unit)
-      not_cancelled.find_by(inventory_unit: inventory_unit) ||
+      not_receivable.find_by(inventory_unit: inventory_unit) ||
         new(inventory_unit: inventory_unit).tap(&:set_default_pre_tax_amount)
     end
 
@@ -226,6 +228,7 @@ module Spree
 
       if other_return_item && (new_record? || COMPLETED_RECEPTION_STATUSES.include?(reception_status.to_sym))
         errors.add(:inventory_unit, :other_completed_return_item_exists, {
+
           inventory_unit_id: inventory_unit_id,
           return_item_id: other_return_item.id,
         })
@@ -235,7 +238,7 @@ module Spree
     def cancel_others
       Spree::ReturnItem.where(inventory_unit_id: inventory_unit_id)
                        .where.not(id: id)
-                       .where.not(reception_status: 'cancelled')
+                       .where.not(reception_status: ['cancelled', 'unreturned_charge'])
                        .each do |return_item|
         return_item.cancel!
       end

@@ -8,7 +8,7 @@ module Spree
       end
     end
 
-    class_attribute :failure_handler
+    class_attribute :failure_handler, :allow_refund_handler
 
     attr_reader :original_order
 
@@ -40,6 +40,7 @@ module Spree
       elsif !new_order.valid?
         raise ChargeFailure.new('order not valid', new_order)
       end
+
     end
 
     private
